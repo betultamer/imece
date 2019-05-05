@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "478088333797",
+    "firebase_url": "https://imece-a4c52.firebaseio.com",
+    "project_id": "imece-a4c52",
+    "storage_bucket": "imece-a4c52.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:478088333797:android:e7dabcf41d4870a1",
+        "android_client_info": {
+          "package_name": "imece.betul.imece"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "478088333797-q2h2e4q1n0tv3acsvriaf10g1f9ujmms.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "imece.betul.imece",
+            "certificate_hash": "e91d624824a10e2849e78ceab5e77fcb93f065ae"
+          }
+        },
+        {
+          "client_id": "478088333797-2ff9k8gtrcpldcja5uq7g2nrk4koe5fh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZ7egGmJONOjAzJ7EmeNXHT-QieA8-vEo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "478088333797-2ff9k8gtrcpldcja5uq7g2nrk4koe5fh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
