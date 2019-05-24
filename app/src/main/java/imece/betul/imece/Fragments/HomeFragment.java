@@ -27,7 +27,10 @@ import java.util.List;
 import imece.betul.imece.Adapter.PostAdapter;
 import imece.betul.imece.Commons.Common;
 import imece.betul.imece.Message.MessageListActivity;
+import imece.betul.imece.Phto;
 import imece.betul.imece.PostActivity;
+
+import imece.betul.imece.PostMultipleActivity;
 import imece.betul.imece.R;
 import imece.betul.imece.model.Post;
 
@@ -70,7 +73,7 @@ public class HomeFragment extends Fragment {
             add_post.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(getActivity(), PostActivity.class));
+                    startActivity(new Intent(getActivity(), PostMultipleActivity.class));
                 }
             });
         }
@@ -105,8 +108,8 @@ public class HomeFragment extends Fragment {
                 postList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Post post = snapshot.getValue(Post.class);
-                    postList.add(post);
-                }
+                        postList.add(post);
+                    }
                 postAdapter.notifyDataSetChanged();
                 progress_circular.setVisibility(View.GONE);
             }

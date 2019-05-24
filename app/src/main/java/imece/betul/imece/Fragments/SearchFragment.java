@@ -26,25 +26,25 @@ import imece.betul.imece.Adapter.PostAdapter;
 import imece.betul.imece.Adapter.UserAdapter;
 import imece.betul.imece.model.Bagisveren;
 import imece.betul.imece.model.Donate;
+import imece.betul.imece.model.Ogretmen;
 import imece.betul.imece.model.Post;
 import imece.betul.imece.model.User;
 import imece.betul.imece.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SearchFragment extends Fragment {
-    private RecyclerView recyclerViewPost;
+    private RecyclerView recyclerViewPost,recyclerViewDonateIl;
     private RecyclerView recyclerViewil;
 
     private RecyclerView recyclerView;
     private PostAdapter postAdapter,post2Adapter;
     private List<Post> postList;
     private List<Post> post2List;
-    private DonateAdapter donateAdapter;
-    private List<Donate> donateList;
-    private UserAdapter userAdapter;
-    private List<Bagisveren> userList;
+    private DonateAdapter donateAdapter,donate2Adapter;
+    private List<Donate> donateList,donate2List;
 
     EditText search_bar;
 
@@ -53,47 +53,50 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         recyclerViewil=view.findViewById(R.id.recycler_view_il);
+        search_bar = view.findViewById(R.id.search_bar);
+
         recyclerViewil.setHasFixedSize(true);
-        LinearLayoutManager mmLayoutManager = new LinearLayoutManager(getContext());
-        mmLayoutManager.setReverseLayout(true);
-        mmLayoutManager.setStackFromEnd(true);
-        recyclerViewil.setLayoutManager(mmLayoutManager);
+        recyclerViewil.setLayoutManager( new LinearLayoutManager(getContext()));
         post2List = new ArrayList<>();
         post2Adapter = new PostAdapter(getContext(), post2List);
         recyclerViewil.setAdapter(post2Adapter);
 
+
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        recyclerViewPost = view.findViewById(R.id.recycler_view_post);
-        recyclerViewPost.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),
-                LinearLayoutManager.HORIZONTAL, false);
-        recyclerViewPost.setLayoutManager(linearLayoutManager);
-
-        search_bar = view.findViewById(R.id.search_bar);
-
         postList = new ArrayList<>();
         postAdapter = new PostAdapter(getContext(), postList);
         recyclerView.setAdapter(postAdapter);
+
+
+        recyclerViewPost = view.findViewById(R.id.recycler_view_post);
+        recyclerViewPost.setHasFixedSize(true);
+        recyclerViewPost.setLayoutManager(new LinearLayoutManager(getContext()));
         donateList = new ArrayList<>();
         donateAdapter = new DonateAdapter(getContext(), donateList);
         recyclerViewPost.setAdapter(donateAdapter);
-       // readUsers();
+
+        recyclerViewDonateIl = view.findViewById(R.id.recycler_view_il2);
+        recyclerViewDonateIl.setHasFixedSize(true);
+        recyclerViewDonateIl.setLayoutManager(new LinearLayoutManager(getContext()));
+        donate2List = new ArrayList<>();
+        donate2Adapter = new DonateAdapter(getContext(), donate2List);
+        recyclerViewDonateIl.setAdapter(donate2Adapter);
+
         search_bar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                postList.clear();
-                donateList.clear();
-                searchUsers(charSequence.toString());
-               searchPost(charSequence.toString());
-               searchIl(charSequence.toString());
+
+
+                    searchUsers(charSequence.toString());
+                    searchPost(charSequence.toString());
+                    searchIl(charSequence.toString());
+                    searchIhtıyacIl(charSequence.toString());
 
             }
 
@@ -117,7 +120,6 @@ public class SearchFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 postList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-
                     Post post= snapshot.getValue(Post.class);
                     postList.add(post);
 
@@ -158,22 +160,25 @@ public class SearchFragment extends Fragment {
         });
     }
 
-    private void searchIl(String s) {
+
+
+
+    public void searchIl(String s) {
 
         Query query = FirebaseDatabase.getInstance().getReference("Posts").orderByChild("il")
                 .startAt(s)
                 .endAt(s+"\uf8ff");
 
+
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                postList.clear();
+                post2List.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Post post= snapshot.getValue(Post.class);
-                    postList.add(post);
+                    Post post2= snapshot.getValue(Post.class);
+                    post2List.add(post2);
                 }
-
-                postAdapter.notifyDataSetChanged();
+                post2Adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -181,4 +186,50 @@ public class SearchFragment extends Fragment {
 
             }
         });
-}}
+}
+    public void searchIhtıyacIl(String s) {
+
+        Query query = FirebaseDatabase.getInstance().getReference("Users/"+ "ogretmen").orderByChild("il")
+                .startAt(s.toUpperCase())
+                .endAt(s.toUpperCase()+"\uf8ff");
+
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                  Ogretmen ogretmen= snapshot.getValue(Ogretmen.class);
+                  getNrPosts(ogretmen.getId());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void getNrPosts( final String postid) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Donates");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                donate2List.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Donate donate = snapshot.getValue(Donate.class);
+                    if (donate.getPublisher().equals(postid)) {
+                        donate2List.add(donate);
+                    }
+                }
+                donate2Adapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+}

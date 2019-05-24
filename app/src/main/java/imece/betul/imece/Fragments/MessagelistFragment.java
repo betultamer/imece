@@ -41,7 +41,7 @@ public class MessagelistFragment extends Fragment implements SwipeRefreshLayout.
     public static final String ACTION_DELETE_FRIEND = "imece.betul.imece.DELETE_FRIEND";
     private RecyclerView recyclerListFrends;
     private ListFriendsAdapter adapter;
-     List<Friend>  dataListFriend ;
+    List<Friend>  dataListFriend ;
     private BroadcastReceiver deleteFriendReceiver;
 
 
@@ -57,9 +57,9 @@ public class MessagelistFragment extends Fragment implements SwipeRefreshLayout.
         recyclerListFrends = (RecyclerView) layout.findViewById(R.id.recycleListFriend);
         recyclerListFrends.setLayoutManager(linearLayoutManager);
 
-            dataListFriend=new ArrayList<>();
-            adapter = new ListFriendsAdapter(getContext(), dataListFriend);
-            recyclerListFrends.setAdapter(adapter);
+        dataListFriend=new ArrayList<>();
+        adapter = new ListFriendsAdapter(getContext(), dataListFriend);
+        recyclerListFrends.setAdapter(adapter);
 
         if (Common.currentuser!=null) {
             getListFriendUId(Common.currentuser.getId());
@@ -101,7 +101,7 @@ public class MessagelistFragment extends Fragment implements SwipeRefreshLayout.
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-            ListFriendsAdapter.mapMark.put(data.getStringExtra("idFriend"), false);
+        ListFriendsAdapter.mapMark.put(data.getStringExtra("idFriend"), false);
 
     }
 

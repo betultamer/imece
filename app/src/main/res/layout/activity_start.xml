@@ -17,7 +17,6 @@
         android:src="@drawable/logo" />
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,9 +36,9 @@
             android:background="@drawable/edittextborder"
             android:ems="10"
             android:hint="Email"
-            android:text="bagiss@gmail.com"
             android:inputType="textEmailAddress"
             android:singleLine="true"
+            android:text="bagiss@gmail.com"
             android:textAlignment="center" />
 
 
@@ -53,8 +52,8 @@
             android:background="@drawable/edittextborder"
             android:ems="10"
             android:hint="Şifre"
-            android:text="123456"
             android:inputType="textPassword"
+            android:text="123456"
             android:textAlignment="center" />
 
 
@@ -77,7 +76,7 @@
             android:id="@+id/textView3"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="211dp"
-            android:layout_height="35dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
             android:layout_marginTop="15dp"
             android:text="Şifremi unuttum"
@@ -92,6 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
             android:layout_weight="1"
+            android:layout_marginBottom="25dp"
             android:gravity="center_vertical"
             android:text=""
             android:textColor="@android:color/black" />

@@ -54,7 +54,7 @@ public class BagisFragment extends Fragment {
 
 
         if (Common.currentogretmen != null) {
-            add_donate.setBackgroundResource(R.drawable.add_story);
+            add_donate.setBackgroundResource(R.drawable.ic_add_black_24dp);
 
 
             add_donate.setOnClickListener(new View.OnClickListener() {

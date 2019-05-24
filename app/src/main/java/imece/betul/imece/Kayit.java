@@ -60,6 +60,7 @@ public class Kayit extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+
         username = findViewById(R.id.username);
         email = findViewById(R.id.email);
         fullname = findViewById(R.id.adsoyad);
@@ -87,11 +88,11 @@ public class Kayit extends AppCompatActivity {
                 String str_email = email.getText().toString();
                 String str_password = password.getText().toString();
 
-                if (TextUtils.isEmpty(str_username) || TextUtils.isEmpty(str_fullname) || TextUtils.isEmpty(str_email) || TextUtils.isEmpty(str_password)){
+                if (TextUtils.isEmpty(str_username)  || TextUtils.isEmpty(str_fullname) || TextUtils.isEmpty(str_email) || TextUtils.isEmpty(str_password)){
                     Toast.makeText(Kayit.this, "Tüm alanlar zorunlu!", Toast.LENGTH_SHORT).show();
                 } else if(str_password.length() < 6){
                     Toast.makeText(Kayit.this, "parola 6 karakterden fazla olmalı", Toast.LENGTH_SHORT).show();
-                } else {
+                }else {
                     register(str_username, str_fullname, il , str_email, str_password);
                 }
             }
@@ -112,7 +113,7 @@ public class Kayit extends AppCompatActivity {
                             map.put("id", userID);
                             map.put("username", username.toLowerCase());
                             map.put("fullname", fullname);
-                            map.put("imageurl","https://firebasestorage.googleapis.com/v0/b/imece-a4c52.appspot.com/o/placeholder-image-png-4.png?alt=media&token=59740cca-a2a2-42e3-8450-c85aa5c9d03a");
+                            map.put("imageurl","https://firebasestorage.googleapis.com/v0/b/imece-a4c52.appspot.com/o/placeholder-image-png-4.png?alt=media&token=2c65d4e9-b04d-4333-984c-ea30e81af4bb");
                             map.put("il", il);
                             map.put("bio", "");
                             reference.setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {

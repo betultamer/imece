@@ -89,7 +89,7 @@ public class PostActivity extends AppCompatActivity {
 
     private void uploadImage_10() {
         final ProgressDialog pd = new ProgressDialog(this);
-        pd.setMessage("Posting");
+        pd.setMessage("Paylaşılıyor");
         pd.show();
         if (mImageUri != null) {
             final StorageReference fileReference = storageRef.child(System.currentTimeMillis()
@@ -130,7 +130,7 @@ public class PostActivity extends AppCompatActivity {
                         finish();
 
                     } else {
-                        Toast.makeText(PostActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PostActivity.this, "Hata", Toast.LENGTH_SHORT).show();
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -141,7 +141,7 @@ public class PostActivity extends AppCompatActivity {
             });
 
         } else {
-            Toast.makeText(PostActivity.this, "No image selected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PostActivity.this, "Fotoğraf seçilmiştir", Toast.LENGTH_SHORT).show();
         }
     }
 

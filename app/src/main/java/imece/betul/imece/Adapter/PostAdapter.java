@@ -5,13 +5,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +35,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -40,21 +46,27 @@ import java.util.Queue;
 
 
 import imece.betul.imece.Commons.Common;
+import imece.betul.imece.Fragments.IlFragment;
 import imece.betul.imece.Fragments.PostDetailFragment;
 import imece.betul.imece.Fragments.ProfileFragment;
+import imece.betul.imece.Fragments.SearchFragment;
 import imece.betul.imece.Message.ChatforTeacherActivity;
 import imece.betul.imece.R;
 import imece.betul.imece.model.Bagisveren;
+import imece.betul.imece.model.Image;
 import imece.betul.imece.model.Post;
 
 import static android.content.Context.MODE_PRIVATE;
+import static java.security.AccessController.getContext;
 
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolder> {
     public String user_name;
     private Context mContext;
     private List<Post> mPosts;
-    ArrayList<String> listFriendID ;
+    String image;
+    List<String> images;
+    ViewPagerAdapter viewPagerAdapter;
     private FirebaseUser firebaseUser;
 
     public PostAdapter(Context context, List<Post> posts) {
@@ -74,10 +86,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         final Post post = mPosts.get(position);
+        LayoutInflater inflater=LayoutInflater.from(mContext);
+        images =new ArrayList<>();
+        viewPagerAdapter =new ViewPagerAdapter(mContext,images,post.getPostid());
 
-        Glide.with(mContext).load(post.getPostimage())
-                .apply(new RequestOptions().placeholder(R.drawable.placeholder))
-                .into(holder.post_image);
+        if (post.getPostimage() !=null ) {
+
+            for (int i = 0; i < post.getPostimage().size(); i++) {
+                image = post.getPostimage().get("link"+i).toString();
+                images.add(image);
+            }
+            holder.vp.setAdapter(viewPagerAdapter);
+
+
+        }
+          else{
+            Toast.makeText(mContext,"error",Toast.LENGTH_SHORT).show();
+        }
         holder.il.setText(post.getIl());
 
 
@@ -117,7 +142,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
 //
 
 
-        holder.post_image.setOnClickListener(new View.OnClickListener() {
+        holder.vp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", MODE_PRIVATE).edit();
@@ -126,6 +151,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
 
                 ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new PostDetailFragment()).commit();
+            }
+        });
+        holder.il.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", MODE_PRIVATE).edit();
+                editor.putString("il", post.getIl());
+                editor.apply();
+                ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new IlFragment()).commit();
+
             }
         });
 
@@ -175,6 +211,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
 
     });}
 
+
+
     private void sendMessage(final String userid) {
 
         String  idRoom = userid.compareTo(Common.currentogretmen.getId()) > 0 ? (Common.currentogretmen.getId().hashCode()+ userid.hashCode()) + "" : "" + (userid.hashCode() + Common.currentogretmen.getId().hashCode());
@@ -193,12 +231,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         FirebaseDatabase.getInstance().getReference("friend").child(Common.currentogretmen.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null) {
+                if (!dataSnapshot.getValue().equals(null)) {
                     HashMap mapRecord = (HashMap) dataSnapshot.getValue();
                     Iterator listKey = mapRecord.keySet().iterator();
                     while (listKey.hasNext()) {
                         String key = listKey.next().toString();
-                        if (mapRecord.get(key).equals(idFriend)){  sendMessage(idFriend);}
+                        if (mapRecord.get(key).toString()== idFriend){  sendMessage(idFriend);
+                        }
                         else{ addFriend(idFriend, false);}
                     }
 
@@ -253,8 +292,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
 
         }
     }
-
-
     @Override
     public int getItemCount() {
         return mPosts.size();
@@ -358,19 +395,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
 
     public class ImageViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView image_profile, post_image, like, sendmessage, save, more;
+        public ImageView image_profile,  like, sendmessage, more;
         public TextView username, likes, description, comments, il;
+        public LinearLayout gallery;
+        public RecyclerView post_image;
+        public ViewPager vp;
 
-        public ImageViewHolder(View itemView) {
+                public ImageViewHolder(View itemView) {
             super(itemView);
             il = itemView.findViewById(R.id.locations);
             image_profile = itemView.findViewById(R.id.image_profile);
             username = itemView.findViewById(R.id.username);
-            post_image = itemView.findViewById(R.id.post_image);
-            save = itemView.findViewById(R.id.save);
+            post_image = itemView.findViewById(R.id.recyclerview);
             sendmessage=itemView.findViewById(R.id.sendMessage);
             description = itemView.findViewById(R.id.description);
             more = itemView.findViewById(R.id.more);
+           // gallery =itemView.findViewById(R.id.gallery);
+            vp= itemView.findViewById(R.id.view_pager);
         }
     }
 

@@ -10,5 +10,6 @@
     <color name="grey_800">#212121</color>
     <color name="colorIndivateTab">#FFFFFF</color>
     <color name="transparent">#00000000</color>
-    <color name="colorCardView">#f7f7f7</color>
+    <color name="colorCardView">#F7F7F7</color>
+    <color name="background">#9E3D5893</color>
 </resources>

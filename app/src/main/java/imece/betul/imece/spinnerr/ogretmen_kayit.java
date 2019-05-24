@@ -78,7 +78,7 @@ public class ogretmen_kayit extends AppCompatActivity {
 
 
 
-        username = findViewById(R.id.username);
+        username = findViewById(R.id.tc);
         email = findViewById(R.id.email);
         fullname = findViewById(R.id.fullname);
         password = findViewById(R.id.password);
@@ -114,7 +114,7 @@ public class ogretmen_kayit extends AppCompatActivity {
                 if (TextUtils.isEmpty(str_username) || TextUtils.isEmpty(str_fullname) || TextUtils.isEmpty(str_email) || TextUtils.isEmpty(str_password)){
                     Toast.makeText(ogretmen_kayit.this, "Lütfen tüm alanları doldurunuz!", Toast.LENGTH_SHORT).show();
                     pd.dismiss();
-                } else if(str_password.length() < 6){
+                }   else if(str_password.length() < 6){
                     Toast.makeText(ogretmen_kayit.this, "Parola 6 karakterden fazla olmalıdır!", Toast.LENGTH_SHORT).show();
                     pd.dismiss();
                 } else {
@@ -136,12 +136,12 @@ public class ogretmen_kayit extends AppCompatActivity {
                             reference = FirebaseDatabase.getInstance().getReference().child("Users").child("ogretmen").child(userID);
                             HashMap<String, Object> map = new HashMap<>();
                             map.put("id", userID);
-                            map.put("username", username.toLowerCase());
+                            map.put("username", username);
                             map.put("fullname", fullname);
                             map.put("il", state);
                             map.put("ilce", city);
                             map.put("okul", okul);
-                            map.put("imageurl","https://firebasestorage.googleapis.com/v0/b/imece-a4c52.appspot.com/o/placeholder-image-png-4.png?alt=media&token=59740cca-a2a2-42e3-8450-c85aa5c9d03a");
+                            map.put("imageurl","https://firebasestorage.googleapis.com/v0/b/imece-a4c52.appspot.com/o/placeholder-image-png-4.png?alt=media&token=2c65d4e9-b04d-4333-984c-ea30e81af4bb");
 
 
                             map.put("bio", "");

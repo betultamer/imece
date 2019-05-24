@@ -13,7 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Message.ChatForDonorActivity"></activity>
+        <activity android:name=".PostMultipleActivity"></activity>
+        <activity android:name=".PostPhotoActivity" />
+        <activity android:name=".Postmultiple" />
+        <activity android:name=".Message.ChatForDonorActivity" />
         <activity android:name=".Message.MessageListActivity" />
         <activity android:name=".Message.ChatforTeacherActivity" />
         <activity android:name=".Message.MessagesActivity">
@@ -53,6 +56,7 @@
             android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".OptionsActivity" />
         <activity android:name=".EditProfileActivity" />
+        <activity android:name=".Phto" />
     </application>
 
 </manifest>

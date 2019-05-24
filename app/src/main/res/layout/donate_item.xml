@@ -33,8 +33,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/image_profile"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="57dp"
+                android:layout_height="70dp"
                 android:layout_margin="10dp" />
 
             <LinearLayout
@@ -91,11 +91,10 @@
                     <TextView
                         android:id="@+id/okul"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="43dp"
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="5dp"
                         android:layout_toEndOf="@id/okullogo"
-                        android:text="location"
                         android:textAllCaps="true"
                         android:textAppearance="@style/TextAppearance.AppCompat"
                         android:textColor="@color/colorPrimary"
@@ -133,19 +132,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:orientation="vertical"
-            android:padding="8dp">
-
-
-            <ImageView
-                android:id="@+id/save"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="right"
-                android:foregroundGravity="right"
-                android:src="@drawable/ic_heart" />
-
-
-        </LinearLayout>
+            android:padding="8dp"/>
 
 
     </LinearLayout>

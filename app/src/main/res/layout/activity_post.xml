@@ -63,12 +63,12 @@
             android:id="@+id/image_added"/>
 
         <EditText
+            android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:hint="Description"
-            android:id="@+id/description"
-            android:maxLines="5"/>
+            android:hint="Açıklama"
+            android:maxLines="5" />
         <Spinner
             android:id="@+id/spinner_il"
             android:layout_width="250dp"
@@ -79,6 +79,14 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/edittextborder" />
 
-    </LinearLayout>
 
+
+    </LinearLayout>
+<LinearLayout
+    android:id="@+id/linearLayoutforphoto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+</LinearLayout>
 </LinearLayout>

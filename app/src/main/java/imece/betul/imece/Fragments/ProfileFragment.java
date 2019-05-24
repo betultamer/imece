@@ -14,6 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
+import com.bumptech.glide.load.MultiTransformation;
+
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,7 +29,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import jp.wasabeef.glide.transformations.*;
 
+import imece.betul.imece.Adapter.DonateAdapter;
 import imece.betul.imece.Adapter.MyDonatesAdapter;
 import imece.betul.imece.Adapter.MyFotosAdapter;
 import imece.betul.imece.MainActivity;
@@ -38,11 +43,14 @@ import imece.betul.imece.model.Ogretmen;
 import imece.betul.imece.model.Post;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
+
 
 public class ProfileFragment extends Fragment {
 
-    ImageView image_profile, options,logo;
-    TextView posts, fullname, bio;
+
+    ImageView image_profile ,image_profileback ,options,logo;
+    TextView posts, fullname, bio,tvfor;
 
 
     FirebaseUser firebaseUser;
@@ -53,7 +61,7 @@ public class ProfileFragment extends Fragment {
     private List<Post> postList;
 
     private List<Donate> donateList;
-    private MyDonatesAdapter myDonatesAdapter;
+    private DonateAdapter myDonatesAdapter;
 
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -68,11 +76,12 @@ public class ProfileFragment extends Fragment {
         profileforteacherid = prefs.getString("profileforteacherid", "none");
         image_profile = view.findViewById(R.id.image_profile);
         fullname = view.findViewById(R.id.fullname);
+        image_profileback =view.findViewById(R.id.image_profileback);
         bio = view.findViewById(R.id.bio);
         options = view.findViewById(R.id.options);
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-
+        tvfor = view.findViewById(R.id.tvfor);
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,7 +104,7 @@ public class ProfileFragment extends Fragment {
             donateList = new ArrayList<>();
             LinearLayoutManager mLayoutMana = new GridLayoutManager(getContext(), 1);
             recyclerView.setLayoutManager(mLayoutMana);
-            myDonatesAdapter = new MyDonatesAdapter(getContext(), donateList);
+            myDonatesAdapter = new DonateAdapter(getContext(), donateList);
             recyclerView.setAdapter(myDonatesAdapter);
             ogretmenInfo(profileforteacherid);
             getNrPosts(profileforteacherid);
@@ -134,11 +143,15 @@ public class ProfileFragment extends Fragment {
                     }
                     Bagisveren user = dataSnapshot.getValue(Bagisveren.class);
 
-                    Glide.with(getContext()).load(user.getImageurl()).into(image_profile);
 
-                    fullname.setText(user.getFullname());
+                Glide.with(getContext()).load(R.mipmap.imeceejpg).apply(bitmapTransform(new BlurTransformation(25))).into(image_profileback);
+                Glide.with(getContext()).load(user.getImageurl()).into(image_profile);
+
+                fullname.setText(user.getFullname());
+                fullname.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                     bio.setText(user.getBio());
-
+                bio.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                    tvfor.setText("Bağışlamak istediği ürünler");
 
             }
             @Override
@@ -159,10 +172,14 @@ public class ProfileFragment extends Fragment {
                     }
                     Ogretmen user = dataSnapshot.getValue(Ogretmen.class);
 
-                    Glide.with(getContext()).load(user.getImageurl()).into(image_profile);
 
+
+
+              Glide.with(getContext()).load(R.drawable.koyokulu).apply(bitmapTransform(new BlurTransformation(25))).into(image_profileback);
+                Glide.with(getContext()).load(user.getImageurl()).into(image_profile);
                     fullname.setText(user.getFullname());
-                    bio.setText(user.getBio());
+                    bio.setText(user.getBio()+" \n "+user.getIl()+" \n"+user.getIlce()+" \n"+user.getOkul());
+                    tvfor.setText("Yardım Talepleri");
                 }
 
 

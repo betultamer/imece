@@ -1,24 +1,24 @@
 package imece.betul.imece.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class Post {
     private String postid;
-    private String postimage;
     private String description;
     private String publisher;
     private String il;
-
-    public Post(String postid, String postimage, String description, String publisher, String il) {
+    Map<String, Object> postimage;
+    public Post(String postid, Map<String, Object> postimage, String description, String publisher, String il) {
         this.postid = postid;
         this.postimage = postimage;
         this.description = description;
-
         this.publisher = publisher;
         this.il = il;
     }
 
-    public Post() {
-    }
-
+    public Post(){}
     public String getPostid() {
         return postid;
     }
@@ -27,13 +27,7 @@ public class Post {
         this.postid = postid;
     }
 
-    public String getPostimage() {
-        return postimage;
-    }
 
-    public void setPostimage(String postimage) {
-        this.postimage = postimage;
-    }
 
     public String getDescription() {
         return description;
@@ -58,4 +52,11 @@ public class Post {
     public void setIl(String il) {
         this.il = il;
     }
-}
+    public void setPostimage(Map<String, Object> postimage)
+    {
+        this.postimage = postimage;
+    }
+    public Map<String, Object> getPostimage()
+    {
+        return this.postimage;
+}}
