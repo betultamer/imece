@@ -231,14 +231,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         FirebaseDatabase.getInstance().getReference("friend").child(Common.currentogretmen.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.getValue().equals(null)) {
+                if (dataSnapshot.getValue() != null) {
                     HashMap mapRecord = (HashMap) dataSnapshot.getValue();
                     Iterator listKey = mapRecord.keySet().iterator();
                     while (listKey.hasNext()) {
                         String key = listKey.next().toString();
-                        if (mapRecord.get(key).toString()== idFriend){  sendMessage(idFriend);
+                        if (mapRecord.get(key).toString().equals(idFriend)){
+                            sendMessage(idFriend);
                         }
-                        else{ addFriend(idFriend, false);}
+                        else{
+                            addFriend(idFriend, false);
+                        }
+
                     }
 
                 } else {
@@ -253,6 +257,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
 
 
     }
+
     private void addFriend(final String idFriend, boolean isIdFriend) {
         if (idFriend != null) {
             if (isIdFriend) {
